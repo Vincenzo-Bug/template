@@ -1,0 +1,4 @@
+Phase 0 establishes an intentionally empty migration baseline.
+
+Domain tables are introduced only in their approved implementation phases. This
+prevents an unreviewed physical schema from preceding the documented model.

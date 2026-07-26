@@ -1,0 +1,1 @@
+"""Application-owned repository ports."""

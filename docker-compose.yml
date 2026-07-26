@@ -1,0 +1,83 @@
+name: python-service-template
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: service
+      POSTGRES_USER: service_dev
+      POSTGRES_PASSWORD: service_dev_only
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - service_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U service_dev -d service"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    ports:
+      - "127.0.0.1:6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+  migrate:
+    build:
+      context: .
+      target: runtime
+    command: ["python", "-m", "alembic", "upgrade", "head"]
+    environment:
+      SERVICE_ENVIRONMENT: development
+      SERVICE_DATABASE_URL: postgresql+asyncpg://service_dev:service_dev_only@postgres:5432/service
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp
+
+  api:
+    build:
+      context: .
+      target: runtime
+    environment:
+      SERVICE_ENVIRONMENT: development
+      SERVICE_DATABASE_URL: postgresql+asyncpg://service_dev:service_dev_only@postgres:5432/service
+      SERVICE_REDIS_URL: redis://redis:6379/0
+      SERVICE_LOG_JSON: "true"
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp
+
+volumes:
+  service_postgres_data:
