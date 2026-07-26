@@ -14,6 +14,8 @@ from this template.
 - Docker image that runs as an unprivileged user with a read-only filesystem
 - locked dependencies, tests, linting, type checking, vulnerability scanning,
   documentation validation, and GitHub Actions
+- AI-agent guidance for Codex-style project starts, shared language, architecture
+  boundaries, TDD, and verification loops
 
 ## Create a project
 
@@ -26,6 +28,26 @@ Use GitHub's **Use this template** action, then replace the starter metadata:
 5. Write the product charter, threat model, API contract, and migrations.
 6. Retain or strengthen the default capability deny set before adding automation
    or AI tooling.
+7. Ask Codex to read `AGENTS.md` and `docs/ai/project-start-checklist.md` before
+   implementing product behavior.
+
+## AI-assisted workflow
+
+This template includes software-fundamentals rules for Codex and other AI coding
+agents:
+
+- `AGENTS.md` contains the root instructions agents should follow first.
+- `docs/ai/software-fundamentals.md` explains the principles behind the workflow.
+- `docs/ai/project-start-checklist.md` gives Codex a repeatable startup process.
+- `docs/ai/project-charter.md` captures the product goal, users, constraints, and
+  acceptance criteria.
+- `docs/ai/ubiquitous-language.md` keeps humans, code, tests, docs, and AI prompts
+  aligned on terminology.
+- `docs/ai/architecture-map.md` tracks module boundaries and public interfaces.
+
+The intended pattern is: shared understanding first, shared language second, small
+verified implementation third. Do not ask an agent to generate large amounts of code
+from a vague specification and repeatedly rerun it until it works.
 
 ## Local development
 
