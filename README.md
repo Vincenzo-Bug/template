@@ -69,3 +69,6 @@ uv run pip-audit
 
 The reusable agent skills are under `.agents/skills/`. They are copied into the
 template as personal workflow aids and are independent of the runtime service.
+For a new project, run `/setup-matt-pocock-skills` once before using `to-spec`,
+`to-tickets`, or other engineering skills; it creates project-specific tracker
+and domain configuration after inspecting that project's remote and conventions.
