@@ -81,9 +81,6 @@ jobs:
       - name: Dependency audit
         run: uv run pip-audit
 
-      - name: Build documentation
-        run: uv run mkdocs build --strict
-
   containers:
     runs-on: ubuntu-latest
     timeout-minutes: 20

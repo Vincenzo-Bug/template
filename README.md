@@ -65,8 +65,7 @@ uv run mypy app tests
 uv run pytest
 uv run bandit -c pyproject.toml -r app
 uv run pip-audit
-uv run mkdocs build --strict
 ```
 
-See the [documentation](docs/00_overview.md) for architecture, security, and
-adaptation guidance.
+The reusable agent skills are under `.agents/skills/`. They are copied into the
+template as personal workflow aids and are independent of the runtime service.

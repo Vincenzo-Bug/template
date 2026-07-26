@@ -45,10 +45,6 @@ dev = [
   "pytest-cov>=7,<8",
   "ruff>=0.8,<1",
 ]
-docs = [
-  "mkdocs>=1.6,<2",
-  "mkdocs-material>=9.5,<10",
-]
 
 [project.scripts]
 service-api = "app.main:run"
